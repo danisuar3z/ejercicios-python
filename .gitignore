@@ -1,0 +1,7 @@
+/Data
+/Correcciones
+/Garabatos
+*.pyc
+*.txt
+*.ini
+*.log
