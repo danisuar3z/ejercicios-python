@@ -41,4 +41,22 @@ def delete_empty_folders(dircty='.'):
     # Tengo q pensarlo aun
     return
 
+os.chdir('Data/ordenar')
+# %%
+
+breakpoint()
+process_folder('caconaa')
+
+
+
+
+
+
+
+
+
+
+
+
+
 
