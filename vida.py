@@ -3,6 +3,9 @@
 # vida.py
 # Dani Suarez - suarezdanieltomas@gmail.com
 
+from datetime import datetime
+
+
 def seg_vividos(fecha_cumple):
     '''
     pre: recibe una fecha con formato "dd/mm/AAAA"
