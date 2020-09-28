@@ -4,7 +4,7 @@
 # Dani Suarez - suarezdanieltomas@gmail.com
 # Ejercicio 7.7: Lectura y selección
 
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
@@ -37,7 +37,22 @@ df.boxplot('altura_arbol', by = 'nombre_cientifico')
 sns.pairplot(data=df, hue='nombre_cientifico')
 # plt.show()
 # %%
+dtypes_parques = {
+    0:'float64', 1:'float64', 2:'int64', 3:'int64', 4:'int64', 5:'int64', 
+    6:'int64', 7:'str', 8:'str', 9:'str', 10:'str', 11:'str', 12:'str', 
+    13:'str', 14:'str', 15:'float64', 16:'float64',
+}
 
+dtypes_veredas = {
+    'float', 
+}
+
+df_parques = pd.read_csv(
+    'Data/arbolado-en-espacios-verdes.csv', dtype=dtypes_parques)
+df_veredas = pd.read_csv('Data/arbolado-lineal.csv', dtypes=dtypes_veredas)
+
+df_tipas_parques = df_parques[df_parques.nombre_cientifico == 'Tipuana Tipu']
+df_tipas_veredas = df_veredas[df_parques.nombre_cie == 'Tipuana tipu']
 
 
 
