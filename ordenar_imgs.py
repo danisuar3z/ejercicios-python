@@ -3,10 +3,6 @@
 # ordenar_imgs.py
 # Dani Suarez - suarezdanieltomas@gmail.com
 
-'''
-EXPLICAR SCRIPT
-'''
-
 import sys
 import os
 from datetime import datetime
@@ -17,7 +13,6 @@ def process_image(img_path, new_folder, root):
     pre: .png or .jpg (not .jpeg), Data folder already exists,
     and new_folder is only the name, without the Data/ part.
     date in YYYYMMDD format before the format extention.
-    pos:
     '''
     date_ = datetime.strptime(img_path[-12:-4], '%Y%m%d')
     os.utime(img_path, (date_.timestamp(), date_.timestamp()))

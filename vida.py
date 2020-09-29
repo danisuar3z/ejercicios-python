@@ -17,3 +17,9 @@ def seg_vividos(fecha_cumple):
     delta = ahora - cumple
     return round(delta.total_seconds())
 
+
+if __name__ == '__main__':
+    import sys
+    print('La cantidad de segundos entre el dia de tu nacimiento y ahora '
+          f'es {seg_vividos(sys.argv[1]):,}.')
+
