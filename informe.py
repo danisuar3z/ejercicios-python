@@ -4,21 +4,26 @@
 # Daniel T. Suárez - suarezdanieltomas@gmail.com
 # Ejercicio 5.8: Usemos tu módulo
 
-
 import sys
+
 from fileparse import parse_csv
+from lote import Lote
+import formato_tabla
 
 
 def leer_camion(nombre_archivo):
     """
     Abre el .csv con la ruta de archivo dada
     y lo "parsea" devolviendo una lista de
-    diccionarios para cada fruta en el camión.
+    objetos Lote para cada fruta en el camión.
     """
-    file = open(nombre_archivo, 'rt')
-    camion = parse_csv(file, select=['nombre', 'cajones', 'precio'],
-                       types=[str, int, float])
-    file.close()
+    with open(nombre_archivo, 'rt') as f:
+        camion_dicts = parse_csv(f, select=['nombre', 'cajones', 'precio'],
+                           types=[str, int, float])
+
+    camion = [Lote(d['nombre'], d['cajones'], d['precio'])
+              for d in camion_dicts]
+
     return camion
 
 
@@ -29,16 +34,15 @@ def leer_precios(nombre_archivo):
     con los nombres de las frutas como claves
     y los precios de venta como claves.
     """
-    file = open(nombre_archivo, 'rt')
-    precios = parse_csv(file, has_headers=False, types=[str, float])
-    file.close()
-    # Convierto la salida de parse_csv a diccionario
+    with open(nombre_archivo, 'rt') as f:
+        precios = parse_csv(f, has_headers=False, types=[str, float])
+
     return dict(precios)
 
 
 def hacer_informe(camion, precios):
     """
-    Toma una lista de diccionarios de las frutas
+    Toma una lista de objetos Lote de las frutas
     cargadas en el camion y un diccionario de
     precios y devuelve una lista de tuplas que
     incluye el cambio entre el precio y el costo
@@ -46,54 +50,42 @@ def hacer_informe(camion, precios):
     """
     lista_total = []
     for fruta in camion:
-        tupla_fruta = (fruta['nombre'], fruta['cajones'],
-                       fruta['precio'],
-                       (precios[fruta['nombre']] - fruta['precio']))
+        tupla_fruta = (fruta.nombre, fruta.cajones,
+                       fruta.precio,
+                       (precios[fruta.nombre] - fruta.precio))
         lista_total.append(tupla_fruta)
     return lista_total
 
 
-def imprimir_informe(informe):
+def imprimir_informe(informe, formateador):
     '''
     Recibe un informe y printea una tabla
-    para mejor visualización.
+    para mejor visualización utilizando un
+    formateador de la clase FormatoTabla.
     '''
-    print(f' {"Fruta":^9} | {"Cajones":^8} | {"Precio":^8} | {"Cambio":^8}')
-    print('-'*44)
+    formateador.encabezado(['Fruta', 'Cajones', 'Precio', 'Cambio'])
     for nombre, cajones, precio, cambio in informe:
-        print(f' {nombre:<9s} | {cajones:>8d} | '
-              f'{"$" + str(f"{precio:.2f}"):>8s} | {cambio:>8.2f} ')
+        rowdata = [nombre, str(cajones), f'{precio:0.2f}', f'{cambio:0.2f}']
+        formateador.fila(rowdata)
 
 
-def informe_camion(archivo_camion='Data/camion.csv',
-                   archivo_precios='Data/precios.csv'):
+def informe_camion(archivo_camion, archivo_precios, formato='txt'):
     '''
     Llama a las funciones necesarias a partir
     de los nombres de archivo para imprimir
-    el informe final. Tiene valores por
-    defecto para los archivos.
+    el informe final.
     '''
     camion = leer_camion(archivo_camion)
     precios = leer_precios(archivo_precios)
     informe = hacer_informe(camion, precios)
-    return imprimir_informe(informe)
-
-
-def main(argv):
-    '''
-    Ejecuta el modulo con los parametros
-    pasados por la linea de comando.
-    '''
-    return informe_camion(argv[1], argv[2])
+    formateador = formato_tabla.crear_formateador(formato)
+    imprimir_informe(informe, formateador)
 
 
 if __name__ == '__main__':
-    if len(sys.argv) != 1:
-        main(sys.argv)
-
-
-'''
-main(['', 'Data/camion.csv', 'Data/precios.csv'])
-print()
-main(['', 'Data/missing.csv', 'Data/precios.csv'])
-'''
+    if len(sys.argv) == 3:
+        informe_camion(sys.argv[1], sys.argv[2])
+    if len(sys.argv) == 4:
+        informe_camion(sys.argv[1], sys.argv[2], sys.argv[3])
+    if len(sys.argv) == 1:
+        informe_camion('Data/camion.csv', 'Data/precios.csv')

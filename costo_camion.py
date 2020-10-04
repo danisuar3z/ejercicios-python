@@ -4,7 +4,9 @@
 # Daniel T. Suárez - suarezdanieltomas@gmail.com
 # Ejercicio 5.9: Un poco más allá
 
-from informe_funciones import leer_camion
+import sys
+from informe import leer_camion
+
 
 def costo_camion(nombre_archivo):
     '''
@@ -14,16 +16,13 @@ def costo_camion(nombre_archivo):
     Utiliza informe_funciones.leer_camion().
     '''
     camion = leer_camion(nombre_archivo)
-    costo = 0
-    for fruta in camion:
-        costo += fruta['cajones'] * fruta['precio']
-    return costo
+    costo_total = sum([c.costo() for c in camion])
+    print(costo_total)
+    return costo_total
 
-def main(argv):
-    '''
-    '''
-    return costo_camion(argv[1])
 
 if __name__ == '__main__':
-    import sys
-    main(sys.argv)
+    if len(sys.argv) == 1:
+        costo_camion('Data/camion.csv')
+    if len(sys.argv) == 2:
+        costo_camion(sys.argv[1])
