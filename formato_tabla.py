@@ -81,4 +81,4 @@ def crear_formateador(fmt):
 
 def imprimir_tabla(camion, headers, formateador):
     formateador.encabezado(headers)
-    # tengo paja
+    # paja mal
