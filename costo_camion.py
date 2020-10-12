@@ -16,10 +16,7 @@ def costo_camion(nombre_archivo):
     Utiliza informe_funciones.leer_camion().
     '''
     camion = leer_camion(nombre_archivo)
-    costo_total = sum([c.costo() for c in camion])
-    print(costo_total)
-    return costo_total
-
+    return camion.precio_total()
 
 if __name__ == '__main__':
     if len(sys.argv) == 1:

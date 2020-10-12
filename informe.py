@@ -8,6 +8,7 @@ import sys
 
 from fileparse import parse_csv
 from lote import Lote
+from camion import Camion
 import formato_tabla
 
 
@@ -24,7 +25,7 @@ def leer_camion(nombre_archivo):
     camion = [Lote(d['nombre'], d['cajones'], d['precio'])
               for d in camion_dicts]
 
-    return camion
+    return Camion(camion)
 
 
 def leer_precios(nombre_archivo):

@@ -7,7 +7,7 @@
 
 # Mi clase
 
-class Canguro1:
+class Canguro_mio:
     def __init__(self, nombre):
         self.nombre = nombre
         self.contenido_marsupio = []
@@ -24,7 +24,7 @@ class Canguro1:
 
 # canguro_malo corregido (mal inicializado el atributo contenido_marsupio)
 
-class Canguro2:
+class Canguro:
     """Un Canguro es un marsupial."""
     
     def __init__(self, nombre):

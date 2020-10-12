@@ -2,6 +2,7 @@
 
 # torre_control.py
 # Dani Suarez - suarezdanieltomas@gmail.com
+
 # Ejercicio 8.12: Torre de Control (Colas)
 
 
@@ -33,37 +34,38 @@ class Cola:
         return len(self.items) == 0
 
 
-class TorreDeControl():
+class TorreDeControl(Cola):
     
     def __init__(self):
-        self.cola_aterrizaje = []
-        self.cola_despegue = []
+        self.aterrizajes = Cola()
+        self.despegues = Cola()
 
     def esta_vacia(self):
-        return (len(self.cola_aterrizaje) == 0 and len(self.cola_despegue) == 0)
+        return (self.aterrizajes.esta_vacia() and self.despegues.esta_vacia())
 
     def nuevo_arribo(self, avion):
-        self.cola_aterrizaje.append(avion)
+        self.aterrizajes.encolar(avion)
 
     def nueva_partida(self, avion):
-        self.cola_despegue.append(avion)
+        self.despegues.encolar(avion)
 
     def asignar_pista(self):
         if self.esta_vacia():
             print('No hay vuelos en espera.')
             return
-        if (self.cola_aterrizaje):
-            print(f'El vuelo {self.cola_aterrizaje[0]} aterrizo con exito')
-            return self.cola_aterrizaje.pop(0)
-        print(f'El vuelo {self.cola_despegue[0]} despego con exito.')
-        return self.cola_despegue.pop(0)
+        if (not self.aterrizajes.esta_vacia()):
+            print(f'El vuelo {self.aterrizajes.items[0]} aterrizo con exito')
+            self.aterrizajes.desencolar()
+        else:
+            print(f'El vuelo {self.despegues.items[0]} despego con exito.')
+            self.despegues.desencolar()
 
     def ver_estado(self):
-        print(f'Vuelos esperando para aterrizar: {", ".join(self.cola_aterrizaje)}'
-              f'\nVuelos esperando para despegar:  {", ".join(self.cola_despegue)}')
+        print(f'Vuelos esperando para aterrizar: {", ".join(self.aterrizajes.items)}'
+              f'\nVuelos esperando para despegar:  {", ".join(self.despegues.items)}')
 
     def __repr__(self):
-        return f'TorreDeControl()'
+        return 'TorreDeControl()'
 
 
 # Testeo
@@ -72,7 +74,9 @@ class TorreDeControl():
 # torre.nueva_partida('KLM1267')
 # torre.nuevo_arribo('AR32')
 # torre.ver_estado()
+# print('Esta vacia?', torre.esta_vacia())
 # torre.asignar_pista()
 # torre.asignar_pista()
 # torre.asignar_pista()
 # torre.asignar_pista()
+# print('Esta vacia?', torre.esta_vacia())
