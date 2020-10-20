@@ -3,25 +3,29 @@
 # fileparse.py
 # Daniel T. Suarez
 # comma-separated-values file parser
-
-import csv
+# now supports tab separated values with parse='tab'
 
 
 def parse_csv(list_obj, has_headers=True, select=None,
-              types=None, silence_errors=False):
+              types=None, silence_errors=False, parse='csv'):
     '''
     Parses csv lines returning a dictionary list or
     a tuple list if there\'s no headers.
     With select you can get only the columns you want
     if you have headers, and with types you can
     convert the value types for every row.
+    Pass parse='tab' if your data is separated by tabs.
     '''
 
     # raise if has_headers=False and select!=None
     if select and not has_headers:
         raise RuntimeError('Can\'t use select if there\'s no headers.')
 
-    rows = csv.reader(list_obj)
+    if parse.lower() == 'csv':
+        import csv
+        rows = csv.reader(list_obj)
+    if parse.lower() == 'tab':
+        rows = (row.strip().split('\t') for row in list_obj)
 
     # Assign headers
     if has_headers:
